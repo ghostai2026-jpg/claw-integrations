@@ -1,0 +1,19 @@
+name: Claw Automation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+jobs:
+  claw-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Run automation test
+        run: |
+          echo "Claw workflow running"
+          date
