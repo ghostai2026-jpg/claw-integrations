@@ -7,6 +7,15 @@ on:
 
 jobs:
   claw-run:
+    runs-on: name: Claw Automation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+jobs:
+  claw-run:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,27 +23,27 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Python
-  uses: actions/setup-python@v5
-  with:
-    python-version: '3.11'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-- name: Install OpenAI
-  run: pip install openai
+      - name: Install OpenAI
+        run: pip install openai
 
-- name: Run OpenAI Test
-  env:
-    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  run: |
-    python - <<EOF
-import os
-from openai import OpenAI
+      - name: Run OpenAI Test
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python - <<EOF
+          import os
+          from openai import OpenAI
 
-client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+          client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
-response = client.responses.create(
-    model="gpt-4.1-mini",
-    input="Say: OpenClaw automation online."
-)
+          response = client.responses.create(
+              model="gpt-4.1-mini",
+              input="Say: OpenClaw automation online."
+          )
 
-print(response.output_text)
-EOF
+          print(response.output_text)
+          EOF
