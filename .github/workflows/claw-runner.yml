@@ -25,13 +25,16 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python -c "
-import os
-from openai import OpenAI
-client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
-response = client.responses.create(
-    model='gpt-4.1-mini',
-    input='Say: OpenClaw automation online.'
-)
-print(response.output_text)
-"
+          python - <<'PY'
+          import os
+          from openai import OpenAI
+
+          client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+
+          response = client.responses.create(
+              model="gpt-4.1-mini",
+              input="Say: OpenClaw automation online."
+          )
+
+          print(response.output_text)
+          PY
