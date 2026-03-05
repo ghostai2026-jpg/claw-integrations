@@ -13,7 +13,28 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Run automation test
-        run: |
-          echo "Claw workflow running"
-          date
+      - name: Install Python
+  uses: actions/setup-python@v5
+  with:
+    python-version: '3.11'
+
+- name: Install OpenAI
+  run: pip install openai
+
+- name: Run OpenAI Test
+  env:
+    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  run: |
+    python - <<EOF
+import os
+from openai import OpenAI
+
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+
+response = client.responses.create(
+    model="gpt-4.1-mini",
+    input="Say: OpenClaw automation online."
+)
+
+print(response.output_text)
+EOF
