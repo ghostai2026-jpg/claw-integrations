@@ -8,7 +8,6 @@ on:
 jobs:
   claw-run:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -19,22 +18,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install OpenAI
-        run: pip install openai
+        run: pip install --upgrade openai
 
       - name: Run OpenAI Test
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          python - <<'PY'
-          import os
-          from openai import OpenAI
-
-          client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-
-          response = client.responses.create(
-              model="gpt-4.1-mini",
-              input="Say: OpenClaw automation online."
-          )
-
-          print(response.output_text)
-          PY
+        run: python scripts/openai_test.py
